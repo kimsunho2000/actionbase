@@ -1,0 +1,115 @@
+---
+title: (Draft) Mutation
+description: Mutation
+sidebar:
+    order: 3
+---
+
+Mutations in Actionbase allow you to create, update, and delete vertices and edges in your graph database.
+
+## Basic Operations
+
+### Creating Vertices
+
+Create a new vertex with properties:
+
+```json
+POST /graph/v3/vertex/mutate
+{
+  "database": "mydb",
+  "table": "users",
+  "id": "user123",
+  "properties": {
+    "name": "John Doe",
+    "email": "john@example.com"
+  }
+}
+```
+
+### Creating Edges
+
+Create a relationship between two vertices:
+
+```json
+POST /graph/v3/edge/mutate
+{
+  "database": "mydb",
+  "table": "follows",
+  "source": "user123",
+  "target": "user456",
+  "properties": {
+    "createdAt": "2025-01-01T00:00:00Z"
+  }
+}
+```
+
+### Updating Properties
+
+Update properties of existing vertices or edges:
+
+```json
+POST /graph/v3/vertex/mutate
+{
+  "database": "mydb",
+  "table": "users",
+  "id": "user123",
+  "properties": {
+    "name": "John Smith",
+    "lastUpdated": "2025-01-02T00:00:00Z"
+  }
+}
+```
+
+### Deleting
+
+Delete vertices or edges:
+
+```json
+DELETE /graph/v3/edge/delete
+{
+  "database": "mydb",
+  "table": "follows",
+  "source": "user123",
+  "target": "user456"
+}
+```
+
+## Write-time Optimization
+
+When you perform mutations, Actionbase automatically:
+
+- Pre-computes indexes for fast lookups
+- Updates counters for aggregation queries
+- Maintains consistency across the graph
+
+This optimization happens during writes, ensuring that read operations remain fast.
+
+## Batch Operations
+
+For better performance with large datasets, use batch mutations:
+
+```json
+POST /graph/v3/edge/batch-mutate
+{
+  "database": "mydb",
+  "table": "follows",
+  "mutations": [
+    {
+      "source": "user1",
+      "target": "user2",
+      "properties": {"createdAt": "2025-01-01T00:00:00Z"}
+    },
+    {
+      "source": "user2",
+      "target": "user3",
+      "properties": {"createdAt": "2025-01-01T00:00:00Z"}
+    }
+  ]
+}
+```
+
+## Next Steps
+
+- [Query](/design/query/) - Learn how to query your data
+- [Metadata](/design/metadata/) - Understand metadata management
+- [Overview](/design/overview/) - Review design principles

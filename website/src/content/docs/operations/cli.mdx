@@ -1,0 +1,47 @@
+---
+title: (Draft) CLI
+description: Command-line interface for managing and maintaining Actionbase clusters
+sidebar:
+    order: 1
+---
+
+The Actionbase CLI provides an interface for managing and maintaining Actionbase clusters. It enables direct interaction with metadata, mutation, and query operations.
+
+## Installation
+
+### Using Homebrew
+
+The easiest way to install the Actionbase CLI is using Homebrew. The Actionbase CLI is available through the [kakao/actionbase](https://github.com/kakao/actionbase) tap:
+
+```bash
+brew install kakao/actionbase/tap/actionbase
+```
+
+This will install the latest stable version of the CLI. To update to the latest version, run:
+
+```bash
+brew upgrade actionbase
+```
+
+### Manual Installation
+
+Alternatively, you can download the latest release binary for your platform from the [releases page](https://github.com/kakao/actionbase/releases). After downloading, make the binary executable and move it to a directory in your PATH:
+
+```bash
+chmod +x actionbase
+sudo mv actionbase /usr/local/bin/
+```
+
+## Setup
+
+The CLI requires connection information to interact with an Actionbase cluster. You can provide this via command-line flags:
+
+```bash
+actionbase --host <host-url> --authKey <auth-key>
+```
+
+For example:
+
+```bash
+actionbase --host http://actionbase-cluster.example.com --authKey ***
+```

@@ -1,0 +1,40 @@
+---
+title: Actionbase 🪇 An OLTP Graph Database for building realtime applications
+head:
+  - tag: title
+    content: Actionbase 🪇 An OLTP Graph Database for building realtime applications
+description: Production-proven OLTP graph database serving tens of millions of users in Kakao.
+template: splash
+editUrl: false
+lastUpdated: false
+hero:
+  title: High-performance graph database for large-scale user activity data
+  tagline: Production-proven OLTP system serving tens of millions of users. Efficiently stores and queries user activity data at scale with REST API.
+  image:
+    file: ~/assets/hero-star.webp
+  actions:
+    - text: Get started
+      icon: right-arrow
+      link: introduction/
+    - text: View on GitHub
+      icon: external
+      variant: minimal
+      link: https://github.com/kakao/actionbase
+---
+
+import { CardGrid, Card } from '@astrojs/starlight/components';
+
+<CardGrid stagger>
+	<Card title="Write-time Optimization" icon="rocket">
+		Pre-computes indexes and counters during writes for ultra-fast reads. Achieve &lt;5ms p99 latency for read operations.
+	</Card>
+	<Card title="Property Graph Model" icon="document">
+		Supports standard property graph data model with flexible schema. Perfect for user activity data and relationship modeling.
+	</Card>
+	<Card title="Easy Integration" icon="puzzle">
+		REST API and client libraries for seamless integration with your applications. Get started quickly with minimal setup.
+	</Card>
+	<Card title="Lambda Architecture Support" icon="external">
+		Provides bulk loading, asynchronous processing, and data pipeline capabilities for comprehensive data management.
+	</Card>
+</CardGrid>

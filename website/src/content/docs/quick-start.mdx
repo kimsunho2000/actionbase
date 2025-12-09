@@ -1,0 +1,91 @@
+---
+title: Quick Start
+description: Get started with Actionbase in minutes.
+---
+
+import { Tabs, TabItem, Badge } from '@astrojs/starlight/components';
+
+This guide will help you get started with Actionbase quickly.
+
+## Requirements
+
+- Java 17
+- Gradle 7.0+
+
+## Building from Source
+
+Clone the repository and build the project:
+
+```bash
+git clone https://github.com/kakao/actionbase.git
+./gradlew build
+```
+
+## Setting up and Running the Server
+
+Actionbase requires HBase as a storage backend. Choose one of the following options:
+
+<Tabs syncKey="hbase-setup">
+  <TabItem label="In-Memory HBase (Recommended for Quick Start)">
+    > <Badge text="Note" variant="caution" /> Data is not persisted with in-memory HBase. All data will be lost when the server stops. For data persistence, use Local HBase instead.
+    ### Setup
+
+    Actionbase includes a built-in in-memory HBase implementation that requires no additional setup. This is the simplest way to get started.
+
+
+    ### Running the Server
+
+    Use the built-in in-memory HBase implementation without any additional setup:
+
+    ```bash
+    ./gradlew :server:bootRun
+    ```
+
+    This uses the in-memory HBase implementation by default.
+  </TabItem>
+  <TabItem label="Local HBase with Docker Compose">
+    ### Setup
+
+    Run HBase locally using Docker Compose:
+
+    ```bash
+    cd dev/
+    docker compose up
+    ```
+
+    This will start a local HBase instance that you can use with the `local` profile.
+
+    ### Running the Server
+
+    If you have started HBase using Docker Compose, run the server with the `local` profile:
+
+    ```bash
+    ./gradlew :server:bootRun --args='--spring.profiles.active=local'
+    ```
+  </TabItem>
+</Tabs>
+
+The server will be available at `http://localhost:8080` in both cases.
+
+## Using Actionbase
+
+Once the server is running, you can interact with Actionbase in two ways:
+
+### Using the CLI
+
+Install the Actionbase CLI and connect to your server. See the [CLI documentation](/operations/cli/) for installation instructions.
+
+```bash
+actionbase --host http://localhost:8080 --authKey your-auth-key
+```
+
+### Using REST API
+
+You can also use `curl` or any HTTP client to make requests. See the [API Reference](/api/) for detailed endpoint documentation.
+
+Example:
+
+```bash
+curl http://localhost:8080/api/v1/...
+```
+

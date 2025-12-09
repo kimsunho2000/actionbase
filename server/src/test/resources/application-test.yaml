@@ -1,0 +1,35 @@
+management:
+  endpoints:
+    web:
+      exposure:
+        include: info
+  info:
+    git:
+      mode: full
+
+spring:
+  sql:
+    init:
+      mode: never
+
+actionbase:
+  tenant: ${AB_TENANT:ab-none}
+  datastore:
+    type: memory
+
+kc:
+  graph:
+    phase: "local"
+
+    warm-up:
+      enabled: false
+      count: 1
+
+    allow-mirror: true
+
+    hbase:
+      version: "embedded"
+
+logging:
+  level:
+    root: info

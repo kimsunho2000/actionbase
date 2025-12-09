@@ -1,0 +1,40 @@
+---
+title: Actionbase 🪇 실시간 애플리케이션 구축을 위한 OLTP 그래프 데이터베이스
+head:
+  - tag: title
+    content: Actionbase 🪇 실시간 애플리케이션 구축을 위한 OLTP 그래프 데이터베이스
+description: 카카오에서 수천만 명의 사용자에게 서비스를 제공하는 프로덕션 검증된 OLTP 그래프 데이터베이스.
+template: splash
+editUrl: false
+lastUpdated: false
+hero:
+  title: 대규모 사용자 활동 데이터를 위한 고성능 그래프 데이터베이스
+  tagline: 수천만 명의 사용자에게 서비스를 제공하는 프로덕션 검증된 OLTP 시스템. REST API로 대규모 사용자 활동 데이터를 효율적으로 저장하고 쿼리합니다.
+  image:
+    file: ~/assets/hero-star.webp
+  actions:
+    - text: 시작하기
+      icon: right-arrow
+      link: ko/introduction/
+    - text: GitHub에서 보기
+      icon: external
+      variant: minimal
+      link: https://github.com/kakao/actionbase
+---
+
+import { CardGrid, Card } from '@astrojs/starlight/components';
+
+<CardGrid stagger>
+	<Card title="Write-time Optimization" icon="rocket">
+		쓰기 시점에 인덱스와 카운터를 미리 계산하여 초고속 읽기를 제공합니다. 읽기 작업에서 &lt;5ms p99 지연 시간을 달성합니다.
+	</Card>
+	<Card title="Property Graph Model" icon="document">
+		유연한 스키마를 지원하는 표준 속성 그래프 데이터 모델을 지원합니다. 사용자 활동 데이터 및 관계 모델링에 최적화되어 있습니다.
+	</Card>
+	<Card title="Easy Integration" icon="puzzle">
+		애플리케이션과의 원활한 통합을 위한 REST API 및 클라이언트 라이브러리를 제공합니다. 최소한의 설정으로 빠르게 시작할 수 있습니다.
+	</Card>
+	<Card title="Lambda Architecture Support" icon="external">
+		포괄적인 데이터 관리를 위한 대량 로딩, 비동기 처리 및 데이터 파이프라인 기능을 제공합니다.
+	</Card>
+</CardGrid>

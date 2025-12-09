@@ -1,0 +1,39 @@
+# WARNING: This file is auto-generated. Any manual changes will be overwritten.
+# To modify import order, update buildSrc/src/main/kotlin/actionbase/tasks/GenerateCodeStyleTask.kt
+
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+indent_size = 2
+indent_style = space
+insert_final_newline = true
+trim_trailing_whitespace = true
+max_line_length = 999
+
+ij_formatter_off_tag = @formatter:off
+ij_formatter_on_tag = @formatter:on
+
+[*.java]
+ij_java_imports_layout = ^,|,com.kakao.actionbase.**,|,com.kakao.**,|,java.**,|,javax.**,|,scala.**,|,kotlin.**,|,org.**,|,com.**,|,*
+ij_java_class_count_to_use_import_on_demand = 999
+ij_java_names_count_to_use_import_on_demand = 999
+ij_continuation_indent_size = 4
+ij_java_space_before_method_parentheses = false
+ij_java_wrap_long_lines = true
+ij_java_keep_line_breaks = false
+
+[*.{kt,kts}]
+indent_size = 4
+ij_kotlin_imports_layout = ^,|,com.kakao.actionbase.**,|,com.kakao.**,|,java.**,|,javax.**,|,scala.**,|,kotlin.**,|,org.**,|,com.**,|,*
+ij_kotlin_allow_trailing_comma = true
+ij_kotlin_allow_trailing_comma_on_call_site = true
+ij_kotlin_packages_to_use_import_on_demand =
+ij_kotlin_name_count_to_use_star_import = 999
+ij_kotlin_name_count_to_use_star_import_for_members = 999
+
+[*.scala]
+# ij_scala_imports_layout = ^,|,com.kakao.actionbase.**,|,com.kakao.**,|,java.**,|,javax.**,|,scala.**,|,kotlin.**,|,org.**,|,com.**,|,*
+ij_continuation_indent_size = 2
+ij_scala_use_scala3_indentation_based_syntax = true

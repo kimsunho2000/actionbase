@@ -1,0 +1,21 @@
+<configuration>
+
+    <!-- Define the root logger with the default log level -->
+    <root level="WARN">
+        <appender-ref ref="STDOUT" />
+    </root>
+
+    <!-- Console appender to output to the console -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Logger settings for com.kakao.actionbase package -->
+    <logger name="com.kakao.actionbase" level="DEBUG" additivity="false">
+        <!-- This setting ensures that logs from com.kakao.actionbase package are not passed to parent loggers -->
+        <appender-ref ref="STDOUT" />
+    </logger>
+
+</configuration>

@@ -1,0 +1,26 @@
+management:
+  info:
+    git:
+      mode: full
+
+spring:
+  sql:
+    init:
+      mode: never
+
+actionbase:
+  tenant: ${AB_TENANT:ab-none}
+  datastore:
+    type: memory
+
+kc:
+  graph:
+    metastoreReloadInterval: 1m
+    metastore-reload-initial-delay: 0s
+
+    use-token: false
+
+    warm-up:
+      enabled: false
+
+    allow-mirror: false

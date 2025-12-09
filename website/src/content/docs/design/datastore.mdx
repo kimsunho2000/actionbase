@@ -1,0 +1,96 @@
+---
+title: (Draft) Datastore
+description: Datastore
+sidebar:
+    order: 5
+---
+
+The datastore is the storage abstraction layer in Actionbase that connects to underlying storage backends like HBase.
+
+## Storage Backends
+
+### HBase
+
+Actionbase currently uses HBase as its primary storage backend. HBase provides:
+
+- **Reliability**: Proven in production at scale
+- **Scalability**: Horizontal scaling capabilities
+- **Consistency**: Strong consistency guarantees
+
+### Future Backends
+
+Actionbase is designed to support multiple storage backends:
+
+- **SlateDB**: Planned support for distributed transactional storage
+
+## Datastore Configuration
+
+### HBase Configuration
+
+Configure HBase connection settings:
+
+```yaml
+datastore:
+  type: hbase
+  hbase:
+    zookeeper:
+      quorum: localhost:2181
+    client:
+      retries: 3
+      timeout: 30000
+```
+
+### Connection Pooling
+
+Actionbase manages connection pools to storage backends for optimal performance:
+
+- Connection reuse reduces latency
+- Pool sizing is configurable based on workload
+- Automatic connection health checks
+
+## Data Organization
+
+### Table Mapping
+
+Actionbase tables map to HBase tables with optimized row key design:
+
+- Row keys are designed for efficient range scans
+- Column families are organized for optimal read/write patterns
+- Compression is applied for storage efficiency
+
+### Region Management
+
+HBase regions are automatically managed:
+
+- Regions split based on size and load
+- Region distribution across cluster nodes
+- Automatic rebalancing for load distribution
+
+## Performance Tuning
+
+### Write Optimization
+
+- Batch writes for better throughput
+- Async writes for non-critical paths
+- Compression to reduce I/O
+
+### Read Optimization
+
+- Caching frequently accessed data
+- Prefetching for scan operations
+- Index usage for fast lookups
+
+## Monitoring
+
+Monitor datastore health and performance:
+
+- Connection pool metrics
+- Read/write latency
+- Storage utilization
+- Region distribution
+
+## Next Steps
+
+- [HBase Setup](/operations/hbase/) - Detailed HBase configuration
+- [Overview](/design/overview/) - Review architecture
+- [Benchmarks](/operations/benchmarks/) - Performance metrics

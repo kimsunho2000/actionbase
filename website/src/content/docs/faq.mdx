@@ -1,0 +1,72 @@
+---
+title: Frequently Asked Questions
+description: Frequently asked questions about Actionbase
+---
+
+## General Questions
+
+### What is Actionbase?
+
+Actionbase is a production-proven OLTP graph database designed for efficiently storing and querying user activity data at scale. It uses a graph data model and provides write-time optimization for ultra-fast reads.
+
+### What problems does Actionbase solve?
+
+Actionbase addresses the limitations of single RDB systems like MySQL when dealing with large-scale user activity data. It simplifies complex sharding logic while maintaining OLTP performance and provides sub-5ms read latency.
+
+### Is Actionbase production-ready?
+
+Yes. Actionbase powers several major [Kakao](/about-kakao) services including KakaoTalk and KakaoShopping, serving tens of millions of users with real-time activity data processing.
+
+## Technical Questions
+
+### What storage backends does Actionbase support?
+
+Currently, Actionbase uses HBase as its storage layer. Future releases will support additional storage backends including SlateDB.
+
+### What is write-time optimization?
+
+Write-time optimization means that Actionbase pre-computes indexes and counters during writes, enabling ultra-fast reads without expensive query-time computations. This results in consistent low-latency read operations (&lt;5ms p99).
+
+### How does Actionbase compare to Neo4j?
+
+While Neo4j aims to solve a broad range of graph database problems, Actionbase focuses on a specific subset: user activity data processing. Actionbase leverages all the strengths of HBase, including scalability and bulk loading capabilities, while providing improved usability on top. When using HBase, you get HBase's benefits with easier usability; when using SlateDB (planned), you'll get SlateDB's benefits with the same consistent interface.
+
+### What programming languages are supported?
+
+Actionbase modules are built with:
+- **Core modules**: Java, Kotlin (Java 8)
+- **Engine and Server**: Kotlin (Java 17)
+- **Pipeline**: Scala (Java 8)
+
+## Getting Started
+
+### How do I get started with Actionbase?
+
+See our [Quick Start Guide](/quick-start/) for installation and setup instructions.
+
+### Do I need to set up HBase separately?
+
+Yes, Actionbase requires HBase as a storage backend. See [HBase Setup](/operations/hbase/) for configuration details.
+
+### Can I run Actionbase locally for development?
+
+Yes, see [Local Setup](/provisioning/local/) for instructions on setting up a local development environment.
+
+## Performance
+
+### What kind of performance can I expect?
+
+In production, Actionbase achieves:
+- Read latency: &lt;5ms (p99)
+- Throughput: Hundreds of thousands of requests per second
+- Data scale: Multiple TB-scale deployments
+
+### How does Actionbase handle horizontal scaling?
+
+Actionbase is designed for horizontal scaling. It leverages the scalability of underlying storage backends like HBase while providing a unified interface for managing distributed data.
+
+## Contributing
+
+### How can I contribute to Actionbase?
+
+We welcome contributions! See our [Community](/community/github/) page for information on contributing, including code style guidelines and the development workflow.
