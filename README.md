@@ -1,5 +1,7 @@
 # Actionbase
 
+> 🚀 **Open-sourced** — [Learn more](https://actionbase.io/blog/open-source-announcement/)
+
 ## Introduction
 
 Actionbase is a database for serving user interactions, used in production at Kakao.
