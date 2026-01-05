@@ -102,13 +102,7 @@ consistent writes, and reliable handling of multi-terabyte datasets on HBase.
 
 ## Contributing
 
-We welcome contributions. Please see our contributing guidelines for details on:
-
-- Code style and conventions
-- Submitting issues and pull requests
-- Development workflow
-
-For more information, visit our [Community](https://actionbase.io/community/github/) page.
+We welcome contributions. For details on how to contribute, including code style, submitting issues and pull requests, and development workflow, see our [Contributing](https://actionbase.io/community/contributing/) page.
 
 ## Current Status
 
