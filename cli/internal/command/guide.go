@@ -8,6 +8,7 @@ import (
 	"github.com/kakao/actionbase/internal/client"
 	"github.com/kakao/actionbase/internal/command/model"
 	"github.com/kakao/actionbase/internal/guides"
+	"github.com/kakao/actionbase/internal/httpserver"
 )
 
 type Guide struct {
@@ -25,52 +26,51 @@ func NewGuide(runner GuideRunner, client *client.ActionbaseClient) *Guide {
 }
 
 func (g *Guide) Execute(args []string) *model.Response {
-	if len(args) < 1 {
+	if len(args) != 2 {
 		fmt.Printf("Usage: %s\n", g.GetType().GetCommand())
 		return nil
 	}
 
-	if args[0] == "stop" {
-		if err := guides.Stop(); err != nil {
-			fmt.Println("Failed to stop guide server:", err)
-		}
+	if args[0] != "start" {
+		fmt.Printf("Usage: %s\n", g.GetType().GetCommand())
 		return nil
 	}
 
-	switch args[1] {
-	case "start":
-		guideTypeString := args[0]
-		guideType, found := guides.TypeFromString(guideTypeString)
-		if !found {
-			fmt.Printf("Invalid guide '%s': only '%s' are supported\n", guideTypeString, strings.Join(guides.SupportedGuideTypes, ","))
-			return nil
-		}
+	serverPort := g.runner.GetCurrentPort()
 
-		if ok := guides.Download(guideType.Name); !ok {
-			return nil
-		}
+	if serverPort == "" {
+		fmt.Println("Server mode is required. Run `actionbase --proxy` to continue")
+		return nil
+	}
 
-		cwd, err := os.Getwd()
-		if err != nil {
-			fmt.Println("Failed to get current working directory:", err)
-			return nil
-		}
+	guideTypeString := args[1]
+	guideType, found := guides.TypeFromString(guideTypeString)
+	if !found {
+		fmt.Printf("Invalid guide '%s': only '%s' are supported\n", guideTypeString, strings.Join(guides.SupportedGuideTypes, ","))
+		return nil
+	}
 
-		src := fmt.Sprintf("%s/%s-latest.zip", cwd, guideType.Name)
-		dest := fmt.Sprintf("%s", cwd)
+	if ok := guides.Download(guideType.Name); !ok {
+		return nil
+	}
 
-		if err := guides.Unzip(src, dest); err != nil {
-			fmt.Println("Failed to unzip guide:", err)
-			return nil
-		}
+	cwd, err := os.Getwd()
+	if err != nil {
+		fmt.Println("Failed to get current working directory:", err)
+		return nil
+	}
 
-		host := g.client.GetHost()
-		if err := guides.Start(cwd, guideType.Name, host, g.runner.GetCurrentPort()); err != nil {
-			fmt.Println("Failed to start guide server:", err)
-		}
+	src := fmt.Sprintf("%s/%s-latest.zip", cwd, guideType.Name)
+	dest := fmt.Sprintf("%s", cwd)
 
-	default:
-		fmt.Printf("Usage: %s\n", g.GetType().GetCommand())
+	if err := guides.Unzip(src, dest); err != nil {
+		fmt.Println("Failed to unzip guide:", err)
+		return nil
+	}
+
+	host := g.client.GetHost()
+	if err := httpserver.StartGuide(cwd, guideType.Name, host, serverPort); err != nil {
+		fmt.Println("Failed to start guide server:", err)
 	}
 
 	return nil
