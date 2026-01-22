@@ -7,10 +7,10 @@
   max-width: 100%;
   margin: 0 auto;
   height: 100%;
-  padding-bottom: 60px;
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
+  overflow: hidden;
+  position: relative;
 }
 
 .search-header {
@@ -91,8 +91,15 @@
   opacity: 0.7;
 }
 
-.search-content {
-  padding: var(--spacing-2xl) 0;
+.search-scroll {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 0;
+  position: relative;
+  padding-bottom: 60px;
 }
 
 .section-header {
@@ -175,6 +182,18 @@
   font-size: var(--font-size-2xl);
   font-weight: 600;
   color: var(--color-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.avatar-text img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: var(--border-radius-full);
 }
 
 .recent-info,
@@ -439,8 +458,6 @@
 
   .search-content {
     background-color: var(--color-white);
-    border: 1px solid var(--color-border);
-    border-top: none;
   }
 
   .explore-grid {

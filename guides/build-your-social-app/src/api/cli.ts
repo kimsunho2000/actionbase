@@ -1,8 +1,7 @@
 import {apiFetch} from './client';
+import {CommandRequest, CommandResponse} from './model';
 
-export function run(
-  request: CommandRequest
-) {
+export function run(request: CommandRequest) {
   return apiFetch<CommandResponse>(
     `/api/command`,
     {
@@ -12,6 +11,6 @@ export function run(
         'Content-Type': 'application/json'
       },
     },
-    false
+    true
   );
 }
