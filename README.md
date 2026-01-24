@@ -8,61 +8,40 @@ Actionbase is a database for serving these user interactions at scale. Currently
 
 ## Quick Start
 
+**1. Run**
+
 ```bash
-docker run -it --pull always ghcr.io/kakao/actionbase:standalone
+docker run -it ghcr.io/kakao/actionbase:standalone
 ```
+Runs server (port 8080) in background, CLI (`actionbase>`) in foreground.
 
-This runs the Actionbase server in the background and the CLI in the foreground.
+**2. Load sample data**
 
-**Write: Insert 3 edges with metadata** (via preset)
 ```
-actionbase> load preset likes
-  │ 3 edges inserted
-  │  - Alice → Phone
-  │  - Alice → Laptop
-  │  - Bob → Phone
+load preset likes
 ```
-
-At write time, Actionbase precomputes everything for reads—no aggregation needed at query time.
-
-**Read: Query precomputed results**
+Loads metadata and 3 edges:
 ```
-actionbase(likes:likes)> get --source Alice --target Phone
-  │ → GET /graph/v3/databases/likes/tables/likes/edges/get?source=Alice&target=Phone
-  │ ← 200 OK {"edges":[{"version":1737377177245,"source":"Alice","ta...
+Alice ─── likes ───> ┌────────┐
+                     │ Phone  │
+Bob ───── likes ───> └────────┘
   │
-  │ The edge is found: [Alice -> Phone]
-  │ |---------------|--------|--------|---------------------------|
-  │ | VERSION       | SOURCE | TARGET | PROPERTIES                |
-  │ |---------------|--------|--------|---------------------------|
-  │ | 1737377177245 | Alice  | Phone  | created_at: 1737377177245 |
-  │ |---------------|--------|--------|---------------------------|
-
-actionbase(likes:likes)> scan --index created_at_desc --start Alice --direction OUT
-  │ → GET /graph/v3/databases/likes/tables/likes/edges/scan/created_at_desc?direction=OUT&limit=25&start=Alice
-  │ ← 200 OK {"edges":[{"version":1737377177297,"source":"Alice","ta...
-  │
-  │ The 2 edges found (offset: -, hasNext: false)
-  │ |---|---------------|--------|--------|---------------------------|
-  │ | # | VERSION       | SOURCE | TARGET | PROPERTIES                |
-  │ |---|---------------|--------|--------|---------------------------|
-  │ | 1 | 1737377177297 | Alice  | Laptop | created_at: 1737377177297 |
-  │ | 2 | 1737377177245 | Alice  | Phone  | created_at: 1737377177245 |
-  │ |---|---------------|--------|--------|---------------------------|
-
-actionbase(likes:likes)> count --start Alice --direction OUT
-  │ → GET /graph/v3/databases/likes/tables/likes/edges/counts?start=Alice&direction=OUT
-  │ ← 200 OK {"counts":[{"start":"Alice","direction":"OUT","count":2...
-  │
-  │ The count of 1 edges found
-  │ |---|-------|-----------|-------|
-  │ | # | START | DIRECTION | COUNT |
-  │ |---|-------|-----------|-------|
-  │ | 1 | Alice | OUT       | 2     |
-  │ |---|-------|-----------|-------|
+  │                  ┌────────┐
+  └───── likes ────> │ Laptop │
+                     └────────┘
 ```
 
-See [Quick Start](https://actionbase.io/quick-start/) for more details, or [Build Your Social Media App with Actionbase](https://actionbase.io/guides/build-your-social-media-app/) to go deeper.
+**3. Query** — Precomputed. Just read.
+
+```
+get --source Alice --target Phone                # Alice → Phone
+scan --index recent --start Bob --direction OUT  # Bob → Laptop, Bob → Phone
+scan --index recent --start Phone --direction IN # Alice → Phone, Bob → Phone
+count --start Alice --direction OUT              # 1
+count --start Phone --direction IN               # 2
+```
+
+See [Quick Start](https://actionbase.io/quick-start/) for more details, or [Build Your Social Media App](https://actionbase.io/guides/build-your-social-media-app/) to go deeper.
 
 ## How It Works
 
@@ -92,11 +71,16 @@ If a single database can handle your workload, that's the better choice.
 Actionbase writes to HBase for storage and emits a WAL to Kafka for recovery, replay, and downstream pipelines. HBase provides strong durability and horizontal scalability.
 
 ```
-Client ─(REST API)─> Actionbase ──> HBase (Storage for user interactions)
-                          │
-                          ├──> JDBC (Metastore, to be consolidated to HBase)
-                          │
-                          └──> Kafka (WAL/CDC) ──> Downstream Pipelines
+Client
+  │
+(REST API)
+  │
+Actionbase
+  ├──> HBase (Storage for user interactions)
+  │
+  ├──> JDBC (Metastore, to be consolidated)
+  │
+  └──> Kafka (WAL/CDC) ──> Downstream Pipelines
 ```
 
 Additional storage backends are planned for small to mid-size deployments.
