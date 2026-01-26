@@ -11,7 +11,7 @@ This document covers the development history of Actionbase before it was open-so
 
 The MVP phase represents the entire period from project inception to open-source release. During this period, Actionbase was applied to various services and evolved through real-world use.
 
-### Phase 1: Foundation Building (Q2 2023)
+### Phase 1: Foundation Building (2023)
 
 **Q: How do we validate technical feasibility and establish a foundation?**
 
@@ -24,7 +24,7 @@ Key milestones:
 
 AI used: GPT-4
 
-### Phase 2: Service Integration (Q1 2024)
+### Phase 2: Service Integration (Early 2024)
 
 **Q: How do we validate through real-world service deployment?**
 
@@ -32,9 +32,11 @@ The system was safely integrated into production by maintaining the existing sys
 
 Key activities:
 
-- First production service write/read migration
+- First production service write/read migration: [KakaoTalk Gift Wish](/stories/kakaotalk-gift-wish/)
 
-### Phase 3: Stabilization (Q3 2024)
+AI used: GPT-4
+
+### Phase 3: Stabilization (Late 2024)
 
 **Q: How do we stabilize the system and expand tenants?**
 
@@ -45,23 +47,27 @@ Key improvements:
 - System stabilization and tenant expansion
 - Support for independent tenant configurations to isolate services
 - Operations automation and monitoring enhancement
-- Applied to KakaoTalk Gift
+- Applied across commerce domain (e.g., [KakaoTalk Gift Recent Views](/stories/kakaotalk-gift-recent-views/))
 
 AI used: Claude 3.5 Sonnet
 
-### Phase 4: Building Sustainable Operations (Q1 2025)
+### Phase 4: Building Sustainable Operations (Early 2025)
 
 **Q: How do we improve operational efficiency and address technical debt?**
 
 During this phase, Actionbase continued to be applied to various services while improving its operational foundation. Key efforts included reducing operational overhead, improving developer tooling, and addressing accumulated technical debt.
 
+Key activities:
+
+- Applied across multiple domains (e.g., [KakaoTalk Friends](/stories/kakaotalk-friends/))
+
 AI used: GPT-4o, Claude 3.5 Sonnet
 
-### Phase 5: Preparing for Open Source (Q2 2025)
+### Phase 5: Preparing for Open Source (2025)
 
 **Q: How do we prepare for open-source release while expanding adoption?**
 
-Building on the foundation from Phase 4, this phase focused on making Actionbase ready for open source. The reimplementation process led to the decision to open-source Actionbase. While legacy code remains, the reimplementation continues to progress toward a more maintainable codebase. During this period, Actionbase expanded its adoption across [Kakao](/project/about-kakao/)'s services, primarily KakaoTalk Gift.
+Building on the foundation from Phase 4, this phase focused on making Actionbase ready for open source. The reimplementation process led to the decision to open-source Actionbase. While legacy code remains, the reimplementation continues to progress toward a more maintainable codebase. During this period, Actionbase was broadly adopted across [Kakao](/project/about-kakao/)'s services.
 
 Key changes:
 
@@ -69,13 +75,12 @@ Key changes:
 - Redesigned API structure
 - Repository separation and organization
 - Separated internal and open-source areas
-- Expanded adoption across Kakao services, primarily KakaoTalk Gift
 
 AI used: GPT-4o, Claude 3.5 Sonnet, Cursor
 
 ## Open Source Release (January 2026)
 
-After this MVP period, during which Actionbase was applied to various services, Actionbase was open-sourced in January 2026.
+After this MVP period, Actionbase was open-sourced in January 2026.
 
 The codebase released is the same one that was developed, operated, and refined inside Kakao. Only minimal modifications were applied to remove security-sensitive or organization-specific details, and some internal features will be opened gradually as they are reviewed.
 

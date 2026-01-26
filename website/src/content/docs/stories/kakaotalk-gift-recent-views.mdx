@@ -5,9 +5,7 @@ sidebar:
   order: 2
 ---
 
-> **Async**: Decouple writes from processing. Queue high-frequency events to WAL and process them asynchronously.
-
-This is the story of how Actionbase handled high-frequency writes for KakaoTalk Gift's recent views.
+This story demonstrates the **Asynchronous Processing** pattern: how Actionbase handled high-frequency writes for KakaoTalk Gift's recent views.
 
 ## The Challenge
 
@@ -40,7 +38,7 @@ The key insight: separate the acknowledgment from the processing. The user gets 
 
 First, when a view event arrives, Actionbase writes it to WAL with `queue=true` and returns immediately. No locking, no state computation—just append to the log.
 
-### Stage 2: Async Processing
+### Stage 2: Processing
 
 Next, a Spark Streaming job consumes the WAL entries and sends mutations back to Actionbase. The processor:
 
@@ -48,7 +46,7 @@ Next, a Spark Streaming job consumes the WAL entries and sends mutations back to
 - Throttles during traffic spikes
 - Retries on transient failures
 
-> **Note:** The async processor is currently internal. Open source release is in progress. See [Roadmap](/community/roadmap/).
+> **Note:** The async processor is currently internal. Open source release is in progress — see [Roadmap](/community/roadmap/).
 
 ### Stage 3: Background Mutation
 
