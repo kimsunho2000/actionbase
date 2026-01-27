@@ -1,15 +1,15 @@
 # Actionbase
 
-> 🚀 **Open-sourced** — [Learn more](https://actionbase.io/blog/open-source-announcement/)
+**One database for likes, views, and follows — pre-computed, served in real-time.**<br />
+**1M+ req/min in production at Kakao. Built on HBase.**
 
-[![Release](https://img.shields.io/github/v/release/kakao/actionbase?label=release&style=flat-square)](https://github.com/kakao/actionbase/releases)
-[![License](https://img.shields.io/badge/license-Apache%202.0-blue?style=flat-square)](https://opensource.org/licenses/Apache-2.0)
-[![Docs](https://img.shields.io/badge/docs-actionbase.io-green?style=flat-square)](https://actionbase.io)
-[![CI](https://img.shields.io/github/actions/workflow/status/kakao/actionbase/continuous-integration.yml?label=ci&style=flat-square)](https://github.com/kakao/actionbase/actions/workflows/continuous-integration.yml)
+[![CI](https://img.shields.io/github/actions/workflow/status/kakao/actionbase/continuous-integration.yml?label=ci&style=flat-square)](https://github.com/kakao/actionbase/actions/workflows/continuous-integration.yml) [![Release](https://img.shields.io/github/v/release/kakao/actionbase?label=release&style=flat-square)](https://github.com/kakao/actionbase/releases) [![License](https://img.shields.io/badge/license-Apache%202.0-blue?style=flat-square)](https://opensource.org/licenses/Apache-2.0) [![Docs](https://img.shields.io/badge/docs-actionbase.io-green?style=flat-square)](https://actionbase.io)
 
 Likes, recent views, follows—look simple, but get complex as you scale, and end up rebuilt again and again.
 
-Actionbase is a database for serving these user interactions at scale. Currently backed by HBase, built at Kakao, handling over a million requests per minute for years.
+Actionbase solves this by precomputing everything at write time, so reads are just lookups. Currently backed by HBase, handling over a million requests per minute for years at Kakao.
+
+[Documentation](https://actionbase.io) · [Open-sourced](https://actionbase.io/blog/open-source-announcement/) · [Why I built this](https://github.com/kakao/actionbase/discussions/32) · [Production stories](https://actionbase.io/stories/kakaotalk-gift-wish/)
 
 ## Quick Start
 
@@ -114,7 +114,6 @@ For questions, ideas, or feedback, join us on [GitHub Discussions](https://githu
 ## Learn More
 
 * [Documentation](https://actionbase.io/)
-* [Why We Built This](https://github.com/kakao/actionbase/discussions/32)
 * [Roadmap](ROADMAP.md)
 * [Actionbase at if(kakaoAI) 2024](https://www.youtube.com/watch?v=8-hVAFVHISE) (YouTube, Korean)
 
