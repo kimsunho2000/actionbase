@@ -30,7 +30,7 @@ class MultiEdgeMutationController(
         // Note: Multi-edges are not supported in AsyncProcessor.
         // Forces SYNC processing regardless of the table's ASYNC setting.
         mutationService
-            .mutate(database, table, request.mutations, lock, syncMode = MutationMode.SYNC, requestContext)
+            .mutate(database, table, request.mutations, lock, syncMode = MutationMode.SYNC, requestContext = requestContext)
             .map { ResponseEntity.ok(MultiEdgeMutationResponse.from(it)) }
 
     @PostMapping("/graph/v3/databases/{database}/tables/{table}/multi-edges/sync")
@@ -39,9 +39,10 @@ class MultiEdgeMutationController(
         @PathVariable table: String,
         @RequestBody request: MultiEdgeBulkMutationRequest,
         @RequestParam(required = false) lock: Boolean = true,
+        @RequestParam(required = false) force: Boolean = false,
         requestContext: RequestContext,
     ): Mono<ResponseEntity<MultiEdgeMutationResponse>> =
         mutationService
-            .mutate(database, table, request.mutations, lock, syncMode = MutationMode.SYNC, requestContext)
+            .mutate(database, table, request.mutations, lock, syncMode = MutationMode.SYNC, forceSyncMode = force, requestContext = requestContext)
             .map { ResponseEntity.ok(MultiEdgeMutationResponse.from(it)) }
 }

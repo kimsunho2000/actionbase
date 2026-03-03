@@ -99,4 +99,140 @@ class MutationModeContextTest {
             assertTrue(ex.message!!.contains("SYNC"))
         }
     }
+
+    @Nested
+    @DisplayName("of with system and force")
+    inner class OfWithSystemAndForceTest {
+        @ObjectSourceParameterizedTest
+        @ObjectSource(
+            """
+            # system > label
+            - label: ASYNC
+              request: null
+              system: SYNC
+              queue: false
+
+            - label: IGNORE
+              request: null
+              system: SYNC
+              queue: false
+
+            - label: SYNC
+              request: null
+              system: ASYNC
+              queue: true
+
+            - label: SYNC
+              request: null
+              system: IGNORE
+              queue: true
+
+            # system > request
+            - label: SYNC
+              request: SYNC
+              system: ASYNC
+              queue: true
+
+            - label: ASYNC
+              request: ASYNC
+              system: SYNC
+              queue: false
+            """,
+        )
+        fun `system takes priority when force is false`(
+            label: String,
+            request: String?,
+            system: String,
+            queue: Boolean,
+        ) {
+            val result =
+                MutationModeContext.of(
+                    label = MutationMode.valueOf(label),
+                    request = request?.let { MutationMode.valueOf(it) },
+                    system = MutationMode.valueOf(system),
+                    force = false,
+                )
+            assertEquals(queue, result.queue)
+        }
+
+        @ObjectSourceParameterizedTest
+        @ObjectSource(
+            """
+            - label: SYNC
+              request: SYNC
+              system: ASYNC
+              queue: false
+
+            - label: SYNC
+              request: ASYNC
+              system: SYNC
+              queue: true
+
+            - label: SYNC
+              request: IGNORE
+              system: SYNC
+              queue: true
+            """,
+        )
+        fun `request takes priority when force is true`(
+            label: String,
+            request: String,
+            system: String,
+            queue: Boolean,
+        ) {
+            val result =
+                MutationModeContext.of(
+                    label = MutationMode.valueOf(label),
+                    request = MutationMode.valueOf(request),
+                    system = MutationMode.valueOf(system),
+                    force = true,
+                )
+            assertEquals(queue, result.queue)
+        }
+
+        @ObjectSourceParameterizedTest
+        @ObjectSource(
+            """
+            # force=true bypasses IGNORE table constraint
+            - label: IGNORE
+              request: SYNC
+              force: true
+              queue: false
+            """,
+        )
+        fun `force=true allows SYNC request on IGNORE table`(
+            label: String,
+            request: String,
+            force: Boolean,
+            queue: Boolean,
+        ) {
+            val result =
+                MutationModeContext.of(
+                    label = MutationMode.valueOf(label),
+                    request = MutationMode.valueOf(request),
+                    force = force,
+                )
+            assertEquals(queue, result.queue)
+        }
+
+        @ObjectSourceParameterizedTest
+        @ObjectSource(
+            """
+            - label: SYNC
+            - label: ASYNC
+            - label: IGNORE
+            """,
+        )
+        fun `force=true with null request throws`(label: String) {
+            val ex =
+                assertThrows<IllegalArgumentException> {
+                    MutationModeContext.of(
+                        label = MutationMode.valueOf(label),
+                        request = null,
+                        force = true,
+                    )
+                }
+            assertTrue(ex.message!!.contains("force"))
+        }
+    }
 }

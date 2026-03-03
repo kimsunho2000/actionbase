@@ -1,10 +1,13 @@
 package com.kakao.actionbase.v2.engine.v3
 
+import com.kakao.actionbase.v2.core.metadata.MutationMode as V2MutationMode
+
 import com.kakao.actionbase.core.edge.MutationEvent
 import com.kakao.actionbase.core.state.State
 import com.kakao.actionbase.engine.MutationContext
 import com.kakao.actionbase.engine.MutationEngine
 import com.kakao.actionbase.engine.binding.TableBinding
+import com.kakao.actionbase.engine.metadata.MutationMode
 import com.kakao.actionbase.v2.engine.Graph
 import com.kakao.actionbase.v2.engine.entity.EntityName
 import com.kakao.actionbase.v2.engine.label.hbase.HBaseIndexedLabel
@@ -49,4 +52,11 @@ class V2BackedEngine(
 
     override val mutationRequestTimeout: Long
         get() = graph.mutationRequestTimeout
+
+    override val systemMutationMode: MutationMode?
+        get() = graph.systemMutationMode?.toV3()
+
+    companion object {
+        private fun V2MutationMode.toV3(): MutationMode = MutationMode.valueOf(name)
+    }
 }

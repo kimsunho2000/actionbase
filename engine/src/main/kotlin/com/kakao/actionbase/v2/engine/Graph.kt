@@ -176,6 +176,8 @@ class Graph(
 
     val metadataFetchLimit = config.metadataFetchLimit
 
+    val systemMutationMode = config.systemMutationMode
+
     init {
         if (config.metastoreReloadInitialDelay != null && config.metastoreReloadInterval != null) {
             startMetastoreReload(config.metastoreReloadInitialDelay, config.metastoreReloadInterval, log)
@@ -283,9 +285,10 @@ class Graph(
         requestId: String = "",
         bulk: Boolean = false,
         mode: MutationMode? = null,
+        force: Boolean = false,
         failOnExist: Boolean = false,
     ): Mono<MutationResult> {
-        val mutationModeContext = MutationModeContext.of(label.entity.mode, mode)
+        val mutationModeContext = MutationModeContext.of(label.entity.mode, mode, systemMutationMode, force)
 
         return Flux
             .fromIterable(edges)

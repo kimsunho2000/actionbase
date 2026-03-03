@@ -28,7 +28,7 @@ class EdgeMutationController(
         requestContext: RequestContext,
     ): Mono<ResponseEntity<EdgeMutationResponse>> =
         mutationService
-            .mutate(database, table, request.mutations, lock, syncMode = null, requestContext)
+            .mutate(database, table, request.mutations, lock, syncMode = null, requestContext = requestContext)
             .map { ResponseEntity.ok(EdgeMutationResponse.from(it)) }
 
     @PostMapping("/graph/v3/databases/{database}/tables/{table}/edges/sync")
@@ -37,9 +37,10 @@ class EdgeMutationController(
         @PathVariable table: String,
         @RequestBody request: EdgeBulkMutationRequest,
         @RequestParam(required = false) lock: Boolean = true,
+        @RequestParam(required = false) force: Boolean = false,
         requestContext: RequestContext,
     ): Mono<ResponseEntity<EdgeMutationResponse>> =
         mutationService
-            .mutate(database, table, request.mutations, lock, syncMode = MutationMode.SYNC, requestContext)
+            .mutate(database, table, request.mutations, lock, syncMode = MutationMode.SYNC, forceSyncMode = force, requestContext = requestContext)
             .map { ResponseEntity.ok(EdgeMutationResponse.from(it)) }
 }

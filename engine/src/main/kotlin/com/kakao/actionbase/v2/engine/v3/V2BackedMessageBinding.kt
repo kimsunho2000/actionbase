@@ -81,10 +81,11 @@ class V2BackedMessageBinding(
         private fun com.kakao.actionbase.engine.Audit.toV2(): V2Audit = V2Audit(actor)
 
         private fun com.kakao.actionbase.engine.metadata.MutationModeContext.toV2(): V2MutationModeContext =
-            V2MutationModeContext(
-                V2MutationMode.valueOf(label.name),
-                request?.let { V2MutationMode.valueOf(it.name) },
-                queue,
+            V2MutationModeContext.of(
+                table = V2MutationMode.valueOf(label.name),
+                request = request?.let { V2MutationMode.valueOf(it.name) },
+                system = system?.let { V2MutationMode.valueOf(it.name) },
+                force = force,
             )
 
         private fun stateToHashEdge(
