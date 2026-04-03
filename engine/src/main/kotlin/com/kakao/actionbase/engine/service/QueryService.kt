@@ -1,4 +1,4 @@
-package com.kakao.actionbase.v2.engine.v3
+package com.kakao.actionbase.engine.service
 
 import com.kakao.actionbase.core.Constants
 import com.kakao.actionbase.core.codec.ByteArrayBufferPool
@@ -32,7 +32,7 @@ import org.apache.hadoop.hbase.client.Get
 
 import reactor.core.publisher.Mono
 
-class V3QueryService(
+class QueryService(
     private val graph: Graph,
 ) {
     private val byteArrayBufferPool = ByteArrayBufferPool.create(graph.encoderPoolSize, Constants.Codec.DEFAULT_BUFFER_SIZE)
@@ -608,7 +608,14 @@ class V3QueryService(
                 ),
             )
 
-        val emptyDataFrameCountPayload: Mono<DataFrameEdgeCountPayload> = Mono.just(DataFrameEdgeCountPayload(emptyList(), 0, emptyMap()))
+        val emptyDataFrameCountPayload: Mono<DataFrameEdgeCountPayload> =
+            Mono.just(
+                DataFrameEdgeCountPayload(
+                    emptyList(),
+                    0,
+                    emptyMap(),
+                ),
+            )
 
         fun empty(direction: Direction): EdgeCountPayload =
             if (direction == Direction.OUT) {

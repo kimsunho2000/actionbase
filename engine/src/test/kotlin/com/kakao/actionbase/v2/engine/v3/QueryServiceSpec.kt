@@ -1,6 +1,7 @@
 package com.kakao.actionbase.v2.engine.v3
 
 import com.kakao.actionbase.core.edge.payload.EdgePayload
+import com.kakao.actionbase.engine.service.QueryService
 import com.kakao.actionbase.v2.core.metadata.Direction
 import com.kakao.actionbase.v2.engine.Graph
 import com.kakao.actionbase.v2.engine.test.GraphFixtures
@@ -11,15 +12,15 @@ import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
 import reactor.kotlin.test.test
 
-class V3QueryServiceSpec :
+class QueryServiceSpec :
     StringSpec({
 
         lateinit var graph: Graph
-        lateinit var v3QueryService: V3QueryService
+        lateinit var queryService: QueryService
 
         beforeTest {
             graph = GraphFixtures.create()
-            v3QueryService = V3QueryService(graph)
+            queryService = QueryService(graph)
         }
 
         afterTest {
@@ -31,7 +32,7 @@ class V3QueryServiceSpec :
             val table = GraphFixtures.hbaseIndexed
             val sampleEdge = GraphFixtures.sampleEdges.first()
             val expectedCount = GraphFixtures.sampleEdges.count { it.src == sampleEdge.src }.toLong()
-            v3QueryService
+            queryService
                 .count(database, table, sampleEdge.src, Direction.OUT)
                 .test()
                 .assertNext {
@@ -51,7 +52,7 @@ class V3QueryServiceSpec :
                     properties = (mapOf("receivedFrom" to null) + sampleEdge.props),
                     context = emptyMap(),
                 )
-            v3QueryService
+            queryService
                 .gets(database, table, listOf(sampleEdge.src), listOf(sampleEdge.tgt))
                 .test()
                 .assertNext {
@@ -73,7 +74,7 @@ class V3QueryServiceSpec :
                     .map { EdgePayload(it.ts, it.src, it.tgt, mapOf("receivedFrom" to null) + it.props, emptyMap()) }
                     .sortedByDescending { it.properties["createdAt"].toString().toLong() }
 
-            v3QueryService
+            queryService
                 .scan(database, table, index, sampleEdge.src, Direction.OUT, limit = 10)
                 .test()
                 .assertNext {
@@ -99,11 +100,11 @@ class V3QueryServiceSpec :
                     .sortedByDescending { it.properties["createdAt"].toString().toLong() }
                     .drop(firstStepLimit)
 
-            v3QueryService
+            queryService
                 .scan(database, table, index, sampleEdge.src, Direction.OUT, limit = firstStepLimit)
                 .flatMap {
                     val offset = it.offset
-                    v3QueryService.scan(database, table, index, sampleEdge.src, Direction.OUT, offset = offset, limit = 10)
+                    queryService.scan(database, table, index, sampleEdge.src, Direction.OUT, offset = offset, limit = 10)
                 }.test()
                 .assertNext {
                     it.edges.size shouldBe expectedCount
@@ -125,7 +126,7 @@ class V3QueryServiceSpec :
                     .map { EdgePayload(it.ts, it.src, it.tgt, mapOf("receivedFrom" to null) + it.props, emptyMap()) }
                     .sortedByDescending { it.properties["createdAt"].toString().toLong() }
 
-            v3QueryService
+            queryService
                 .scan(database, table, index, sampleEdge.src, Direction.OUT, limit = 10, features = listOf("total"))
                 .test()
                 .assertNext {
@@ -151,7 +152,7 @@ class V3QueryServiceSpec :
             val expectedCount = expectedEdges.size
 
             // valid ranges: none, (permission), (permission, createdAt)
-            v3QueryService
+            queryService
                 .scan(database, table, index, sampleEdge.src, Direction.OUT, limit = 10, ranges = "permission:eq:na;createdAt:gt:10")
                 .test()
                 .assertNext {
@@ -178,7 +179,7 @@ class V3QueryServiceSpec :
 
             // valid ranges: none, (permission), (permission, createdAt)
             assertThrows<IllegalArgumentException> {
-                v3QueryService
+                queryService
                     .scan(database, table, index, sampleEdge.src, Direction.OUT, limit = 10, ranges = "createdAt:gt:10")
                     .subscribe()
             }
