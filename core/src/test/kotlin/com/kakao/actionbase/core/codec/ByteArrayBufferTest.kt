@@ -16,25 +16,31 @@ class ByteArrayBufferTest {
     companion object {
         private const val BUFFER_SIZE = 64
         private const val FIELD_SOURCES = """
-- field:
-    type: int
-    value: "27"
-- field:
-    type: long
-    value: "123456789"
-- field:
-    type: string
-    value: "hello"
-- field:
-    type: boolean
-    value: "true"
-- field:
-    type: float
-    value: "3.14"
-- field:
-    type: double
-    value: "3.14159"
-"""
+        - field:
+            type: int
+            value: "27"
+        - field:
+            type: long
+            value: "123456789"
+        - field:
+            type: string
+            value: "hello"
+        - field:
+            type: boolean
+            value: "true"
+        - field:
+            type: float
+            value: "3.14"
+        - field:
+            type: double
+            value: "3.14159"
+        - field:
+            type: byte
+            value: "127"
+        - field:
+            type: short
+            value: "32767"
+        """
     }
 
     @ObjectSourceParameterizedTest
@@ -82,9 +88,9 @@ class ByteArrayBufferTest {
     fun `hasRemaining should return true when data exists`(field: Field) {
         val buffer = ByteArray(BUFFER_SIZE).buffer()
         buffer.putValue(field.cast(), Order.ASC)
-        buffer.setPosition(0)
+        val readBuffer = buffer.toByteArray().buffer()
 
-        assertTrue(buffer.hasRemaining())
+        assertTrue(readBuffer.hasRemaining())
     }
 
     @ObjectSourceParameterizedTest
@@ -100,6 +106,13 @@ class ByteArrayBufferTest {
         readBuffer.getValue<Any>()
 
         assertFalse(readBuffer.hasRemaining())
+    }
+
+    @Test
+    fun `hasRemaining should return false after data is empty`() {
+        val buffer = ByteArray(0).buffer()
+
+        assertFalse(buffer.hasRemaining())
     }
 
     @ObjectSourceParameterizedTest
