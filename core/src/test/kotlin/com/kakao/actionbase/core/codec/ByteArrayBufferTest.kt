@@ -141,4 +141,34 @@ class ByteArrayBufferTest {
 
         assertFalse(ascBytes.contentEquals(descBytes))
     }
+
+    @ObjectSourceParameterizedTest
+    @ObjectSource(
+        """
+        - field1:
+            type: int
+            value: "27"
+          field2:
+            type: string
+            value: "hello"
+          field3:
+            type: boolean
+            value: "true"
+        """,
+    )
+    fun `putValue and getValue should maintain order for multiple values`(
+        field1: Field,
+        field2: Field,
+        field3: Field,
+    ) {
+        val buffer = ByteArray(BUFFER_SIZE).buffer()
+        buffer.putValue(field1.cast(), Order.ASC)
+        buffer.putValue(field2.cast(), Order.ASC)
+        buffer.putValue(field3.cast(), Order.ASC)
+        buffer.setPosition(0)
+
+        assertEquals(field1.cast(), buffer.getValue())
+        assertEquals(field2.cast(), buffer.getValue())
+        assertEquals(field3.cast(), buffer.getValue())
+    }
 }
